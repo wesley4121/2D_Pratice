@@ -75,6 +75,9 @@ while 1:
 
     for t in group.sprites():
         screen.blit(t.image,t.rect)
+    for w in group.sprites(): ##碰撞
+        if w 
+            pygame.sprite.collide_rect(cubeA,w.rect)
     cubeA.display(1)
     cubeA.gravity()
     cubeA.move()
