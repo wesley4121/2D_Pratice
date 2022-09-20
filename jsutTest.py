@@ -1,3 +1,3 @@
 import sys,os
-with open('spatxtm.', 'w') as file:
-    file.write('Spam and eggs!')
+for i in range(10,15):
+    print(i)

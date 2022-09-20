@@ -4,8 +4,23 @@ import GameMapSource
 
 
 pygame.init()
-size = SCwidth, SCheight = 1280, 704
-screen = pygame.display.set_mode(size)
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+
+
+def game_display():
+    global screenwidth, screenheight, screen, screensize, screenscale
+    screenscale = 1
+    screensize = screenwidth, screenheight = 1280*screenscale, 704*screenscale
+    screen = pygame.display.set_mode(screensize)
+
+
+game_display()
+
 background = pygame.image.load("BG.png").convert_alpha()
 backgroundrect = background.get_rect()
 tile_sky = pygame.image.load("tile_sky.png").convert_alpha()
@@ -32,8 +47,7 @@ class tile(pygame.sprite.Sprite):
         screen.blit(self.image, self.rect)
 
 
-tilegroup = pygame.sprite.Group()
-wallgroup = pygame.sprite.Group()
+tilegroup,wallgroup = pygame.sprite.Group(),pygame.sprite.Group()
 
 
 def Create_map(map_str):
@@ -41,11 +55,14 @@ def Create_map(map_str):
         for x, c in enumerate(line):
             if c == "W":
                 wallgroup.add(wall(x*32, y*32, tile_dirt))
+                
+                
 
             if c == " ":
                 tilegroup.add(tile(x*32, y*32, tile_sky))
 
 
+collide_top ,collide_down ,collide_right,collide_left  =[],[],[],[] ##player_collidePointList
 class Player(pygame.sprite.Sprite):
 
     def __init__(self, width, height):
@@ -60,11 +77,35 @@ class Player(pygame.sprite.Sprite):
         self.isjump = False
         self.jumpforce = 1.1
         self.jumpspeed = 10
+        self.collision = [False] * 9
+
+    def draw_point(self, screen, pos, collision):
+        if not collision:
+            topleftRect = pygame.Rect(pos,(10,10))
+            pygame.draw.rect(screen, GREEN, topleftRect)
+        else:
+            pygame.draw.rect(screen, RED, pos, 1)
+    def draw(self, screen):
+
+        pygame.draw.rect(screen, WHITE, self.rect, 1)
+        self.draw_point(screen, self.rect.topleft, self.collision[0])
+        self.draw_point(screen, self.rect.midtop, self.collision[1])
+        self.draw_point(screen, self.rect.topright, self.collision[2])
+
+        self.draw_point(screen, self.rect.midleft, self.collision[3])
+        self.draw_point(screen, self.rect.center, self.collision[4])
+        self.draw_point(screen, self.rect.midright, self.collision[5])
+
+        self.draw_point(screen, self.rect.bottomleft, self.collision[6])
+        self.draw_point(screen, self.rect.midbottom, self.collision[7])
+        self.draw_point(screen, self.rect.bottomright, self.collision[8])
+
+    
 
     def gravity(self):
 
         self.rect.y += self.gravityspeed  # how fast player falls
-        if pygame.sprite.spritecollide(player, wallgroup, 0, None):
+        if pygame.sprite.spritecollide(player, wallgroup, 0, None): ## 碰撞
             self.gravityspeed = 0
         else:
             self.gravityspeed = 3.2
@@ -88,25 +129,25 @@ class Player(pygame.sprite.Sprite):
             sys.exit()
 
     def jump(self):
-        nowposition = self.rect.y 
+        nowposition = self.rect.y
         endposition = self.rect.y * self.jumpforce
         if isground:
-            while self.rect.y< endposition:
+            while self.rect.y < endposition:
                 pass
-
-
+    
     def collidcheak(self):
+        
+        
         # 檢查超出視窗
-        if self.rect.right >= SCwidth:
-            self.rect.x = SCwidth-64
+        if self.rect.right >= screenwidth:
+            self.rect.x = screenwidth-64
         if self.rect.left <= 0:
             self.rect.x = 0
-        if self.rect.bottom >= SCheight:
-            self.rect.y = SCheight
+        if self.rect.bottom >= screenheight:
+            self.rect.y = screenheight
         if self.rect.top <= 0:
             self.rect.y = 0
         # 檢查平台碰撞
-
     def display(self):
         screen.blit(self.image, self.rect)
 
@@ -121,11 +162,15 @@ isground = False
 player = Player(10, 10)
 background = pygame.transform.scale(background, (1280, 704))
 Create_map(GameMapSource.getMapStr(1))
+
+
 while 1:
+
     screen.fill((0, 0, 0))
     screen.blit(background, backgroundrect)
     wallgroup.draw(screen)
     player.update()
+    player.draw(screen)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
