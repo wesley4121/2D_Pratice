@@ -12,6 +12,7 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 
+
 def game_display():
     global screenwidth, screenheight, screen, screensize, screenscale
     screenscale = 1
