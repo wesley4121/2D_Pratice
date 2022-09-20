@@ -81,23 +81,24 @@ class Player(pygame.sprite.Sprite):
 
     def draw_point(self, screen, pos, collision):
         if not collision:
-            topleftRect = pygame.Rect(pos,(10,10))
-            pygame.draw.rect(screen, GREEN, topleftRect)
+            box = pygame.Rect(pos,(10,10))
+            pygame.draw.rect(screen, GREEN, box)
         else:
-            pygame.draw.rect(screen, RED, pos, 1)
+            pygame.draw.rect(screen, RED, box)
+
     def draw(self, screen):
 
         pygame.draw.rect(screen, WHITE, self.rect, 1)
-        self.draw_point(screen, self.rect.topleft, self.collision[0])
-        self.draw_point(screen, self.rect.midtop, self.collision[1])
-        self.draw_point(screen, self.rect.topright, self.collision[2])
+        self.draw_point(screen, (self.rect.topleft[0]-10,self.rect.topleft[1]-10), self.collision[0])
+        self.draw_point(screen, (self.rect.midtop[0]-5,self.rect.midtop[1]-10), self.collision[1])
+        self.draw_point(screen, (self.rect.topright[0],self.rect.topright[1]-10), self.collision[2])
 
-        self.draw_point(screen, self.rect.midleft, self.collision[3])
-        self.draw_point(screen, self.rect.center, self.collision[4])
-        self.draw_point(screen, self.rect.midright, self.collision[5])
+        self.draw_point(screen, (self.rect.midleft[0]-10,self.rect.midleft[1]-5), self.collision[3])
+        self.draw_point(screen, (self.rect.center[0]-5,self.rect.center[1]-5), self.collision[4])
+        self.draw_point(screen, (self.rect.midright[0],self.rect.midright[1]-5), self.collision[5])
 
-        self.draw_point(screen, self.rect.bottomleft, self.collision[6])
-        self.draw_point(screen, self.rect.midbottom, self.collision[7])
+        self.draw_point(screen, (self.rect.bottomleft[0]-10,self.rect.bottomleft[1]), self.collision[6])
+        self.draw_point(screen, (self.rect.midbottom[0]-5,self.rect.midbottom[1]), self.collision[7])
         self.draw_point(screen, self.rect.bottomright, self.collision[8])
 
     
