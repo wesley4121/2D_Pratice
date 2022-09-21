@@ -22,6 +22,9 @@ def game_display():
     screenscale = 1
     screensize = screenwidth, screenheight = 1280*screenscale, 704*screenscale
     screen = pygame.display.set_mode(screensize)
+def draw_mapScroller():
+    map_lrft =  pygame.Rect(200,360,2,720)
+    pygame.draw.rect(screen,RED,map_lrft)
 
 
 game_display()
@@ -225,7 +228,7 @@ while 1:
     wallgroup.draw(screen)
 
     player.update()
-
+    draw_mapScroller()
 
 
 
