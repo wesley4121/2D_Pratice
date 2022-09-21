@@ -65,7 +65,6 @@ def Create_map(map_str):
 
 
 
-collide_top ,collide_down ,collide_right,collide_left  =[],[],[],[] ## 玩家碰撞列表
 ## 玩家
 class Player(pygame.sprite.Sprite):
 
@@ -76,8 +75,8 @@ class Player(pygame.sprite.Sprite):
         self.pos = (self.width, self.height)
         self.image = pygame.image.load("tile_player.png").convert_alpha()
         self.rect = self.image.get_rect(topleft=(width, height))
-        self.movespeed = 5
-        self.gravityspeed = 3.2
+        self.movespeed = 2
+        self.gravityspeed = 1
         self.jumpforce = 100
         self.jumpspeed = 10
         self.isjump = False
@@ -91,7 +90,7 @@ class Player(pygame.sprite.Sprite):
             self.gravityspeed = 0
 
         else:
-            self.gravityspeed = 3.2
+            self.gravityspeed = 1
     ## 移動
     def move(self):
         key = pygame.key.get_pressed()
@@ -133,17 +132,17 @@ class Player(pygame.sprite.Sprite):
         bottommidtBool,bottomrightBool
 
         ## 碰撞點trigger
-        topleft = pygame.Rect((self.rect.topleft[0]-10,self.rect.topleft[1]-10),(10,10))
-        midtop = pygame.Rect((self.rect.midtop[0]-5,self.rect.midtop[1]-10),(10,10))
-        topright = pygame.Rect((self.rect.topright[0],self.rect.topright[1]-10),(10,10))
+        topleft = pygame.Rect((self.rect.topleft[0],self.rect.topleft[1]),(3,3))
+        midtop = pygame.Rect((self.rect.midtop[0]-20,self.rect.midtop[1]),(40,3))
+        topright = pygame.Rect((self.rect.topright[0]-3,self.rect.topright[1]),(3,3))
 
-        midleft = pygame.Rect((self.rect.midleft[0]-10,self.rect.midleft[1]-5),(10,10))
+        midleft = pygame.Rect((self.rect.midleft[0],self.rect.midleft[1]-45),(2,90))
         center = pygame.Rect((self.rect.center[0]-5,self.rect.center[1]-5),(10,10))
-        midright = pygame.Rect((self.rect.midright[0],self.rect.midright[1]-5),(10,10))
+        midright = pygame.Rect((self.rect.midright[0]-2,self.rect.midright[1]-45),(2,90))
 
-        bottomleft = pygame.Rect((self.rect.bottomleft[0]-10,self.rect.bottomleft[1]),(10,10))
-        midbottom = pygame.Rect((self.rect.midbottom[0]-5,self.rect.midbottom[1]),(10,10))
-        bottomright = pygame.Rect(self.rect.bottomright,(10,10))
+        bottomleft = pygame.Rect((self.rect.bottomleft[0],self.rect.bottomleft[1]),(2,2))
+        midbottom = pygame.Rect((self.rect.midbottom[0]-20,self.rect.midbottom[1]),(40,2))
+        bottomright = pygame.Rect(self.rect.bottomright,(2,2))
 
         ## 碰撞點bool
         topleftBool = bool((pygame.Rect.collidelist(topleft,wallrectLIst) == -1))
@@ -171,20 +170,19 @@ class Player(pygame.sprite.Sprite):
         if self.rect.top <= 0:
             self.rect.y = 0
         # 檢查平台碰撞
-        if not topleftBool or not topmidBool or not toprightBool:
+        if not topleftBool or not topmidBool or not toprightBool:#上
             print('topcol')
-            if not self.isground:
-                self.rect.y +=10
-        if not topleftBool or not midleftBool or not bottomleftBool:
+            self.rect.y +=self.movespeed
+        if not topleftBool or not midleftBool : #左
             print('leftcol')
-            if not self.isground:
-                self.rect.x +=30
-        if not toprightBool or not midrightBool or not bottomrightBool:
+            self.rect.x +=self.movespeed
+        if not toprightBool or not midrightBool :#右
             print('rightcol')
-            if not self.isground:
-                self.rect.x -=30
-        if not bottomleftBool or not bottommidtBool or not bottomrightBool:
+            self.rect.x -=self.movespeed
+        if not bottomleftBool or not bottommidtBool or not bottomrightBool:#下
             print('bottoncol')
+            if not self.isground:
+                self.rect.y -=1
             self.isground = True
         else:
             self.isground = False
@@ -201,15 +199,15 @@ class Player(pygame.sprite.Sprite):
 
     ## 顯示碰撞格 dubug
 
-        self.cheakCollidePoint(topleft,topleftBool)
-        self.cheakCollidePoint(midtop,topmidBool)
-        self.cheakCollidePoint(topright,toprightBool)
-        self.cheakCollidePoint(midleft,midleftBool)
-        self.cheakCollidePoint(center,midcenterBool)
-        self.cheakCollidePoint(midright,midrightBool)
-        self.cheakCollidePoint(bottomleft,bottomleftBool)
-        self.cheakCollidePoint(midbottom,bottommidtBool)
-        self.cheakCollidePoint(bottomright,bottomrightBool)
+        # self.cheakCollidePoint(topleft,topleftBool)
+        # self.cheakCollidePoint(midtop,topmidBool)
+        # self.cheakCollidePoint(topright,toprightBool)
+        # self.cheakCollidePoint(midleft,midleftBool)
+        # self.cheakCollidePoint(center,midcenterBool)
+        # self.cheakCollidePoint(midright,midrightBool)
+        # self.cheakCollidePoint(bottomleft,bottomleftBool)
+        # self.cheakCollidePoint(midbottom,bottommidtBool)
+        # self.cheakCollidePoint(bottomright,bottomrightBool)
 
 
 
