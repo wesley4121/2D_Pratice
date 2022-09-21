@@ -101,7 +101,9 @@ class Player(pygame.sprite.Sprite):
 
         if key[pygame.K_w]:
             self.rect.y-=self.movespeed
-            nowposition = self.rect.y
+        if key[pygame.K_w]:
+            self.rect.y-=self.movespeed
+
         # if key[pygame.K_s]:
         #     self.rect.y+=self.movespeed
         if key[pygame.K_a]:
