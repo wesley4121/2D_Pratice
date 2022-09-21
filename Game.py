@@ -78,10 +78,10 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(width, height))
         self.movespeed = 5
         self.gravityspeed = 3.2
-        self.isjump = False
         self.jumpforce = 100
         self.jumpspeed = 10
-        self.collision = [False] * 9
+        self.isjump = False
+        self.isground = False
 
     ## 重力
     def gravity(self):
@@ -109,7 +109,7 @@ class Player(pygame.sprite.Sprite):
         if key[pygame.K_d]:
             self.rect.x += self.movespeed
         if key[pygame.K_SPACE]:  # debug
-            print(isground)
+            print(self.isground)
         if key[pygame.K_q]:  # debug
             sys.exit()
     ## 跳躍
@@ -117,7 +117,7 @@ class Player(pygame.sprite.Sprite):
 
         self.isjump = True
         endposition = self.rect.y + self.jumpforce
-        if isground and self.isjump:
+        if self.isground and self.isjump:
             while self.rect.y < endposition:
                 self.rect.y += self.movespeed
     ##  繪製碰撞點
@@ -173,12 +173,21 @@ class Player(pygame.sprite.Sprite):
         # 檢查平台碰撞
         if not topleftBool or not topmidBool or not toprightBool:
             print('topcol')
+            if not self.isground:
+                self.rect.y +=10
         if not topleftBool or not midleftBool or not bottomleftBool:
             print('leftcol')
+            if not self.isground:
+                self.rect.x +=30
         if not toprightBool or not midrightBool or not bottomrightBool:
             print('rightcol')
+            if not self.isground:
+                self.rect.x -=30
         if not bottomleftBool or not bottommidtBool or not bottomrightBool:
             print('bottoncol')
+            self.isground = True
+        else:
+            self.isground = False
     ## 玩家顯示
     def display(self):
         screen.blit(self.image, self.rect)
@@ -189,6 +198,9 @@ class Player(pygame.sprite.Sprite):
         self.move()
         self.drawCollidePosint()
         self.collidbehevior()
+
+    ## 顯示碰撞格 dubug
+
         self.cheakCollidePoint(topleft,topleftBool)
         self.cheakCollidePoint(midtop,topmidBool)
         self.cheakCollidePoint(topright,toprightBool)
@@ -200,7 +212,7 @@ class Player(pygame.sprite.Sprite):
         self.cheakCollidePoint(bottomright,bottomrightBool)
 
 
-isground = False
+
 player = Player(10, 10)
 background = pygame.transform.scale(background, (1280, 704))
 Create_map(GameMapSource.getMapStr(1))
