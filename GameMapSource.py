@@ -4,28 +4,28 @@ import pygame,sys
 
 ##_map
 map1 = """
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-       WWWWW WWWWWWWWWWWWWWWW           
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                W                       
-                W                       
-         WWW    WW                      
-       WWWWW  WWWWWW                    
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"""
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+       WWWWW WWWWWWWWWWWWWWWW                  WWWWW WWWWWWWWWWWWWWWW                  WWWWW WWWWWWWWWWWWWWWW           
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                W                                       W                                       W                       
+                W                                       W                                       W                       
+         WWW    WW                                      W                                       W                       
+       WWWWW  WWWWWW                                    W                                       W                       
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"""
 
 @staticmethod
 def getMapStr(map) -> list:

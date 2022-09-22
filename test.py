@@ -1,10 +1,6 @@
-import sys,os,csv
+import sys,os,csv,json
 
-with open("data.csv",newline="",encoding="utf8") as ofile:
-    opencsvfile = csv.DictReader(ofile)
-    clean = [i for i in ofile]
-    print(clean)
-with open("dataw.csv","w",newline="",encoding="utf8") as wfile:
-    writefile = csv.DictWriter(wfile ,fieldnames="tototoyoyo.csv")
-    writefile.writerow()
+with open("aqx_p_432.json",encoding="utf5",ascii=False) as ofale:
+    ddd = json.load(ofale)
     
+
