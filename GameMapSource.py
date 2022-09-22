@@ -12,7 +12,7 @@ map1 = """
                                         
                                         
                                         
-       WWWWW WWWWWWWWWWWWWWWWWWWWWWWWWW 
+       WWWWW WWWWWWWWWWWWWWWW           
                                         
                                         
                                         
@@ -21,10 +21,10 @@ map1 = """
                                         
                                         
                                         
-                                        
-                                        
-                                        
-                                        
+                W                       
+                W                       
+         WWW    WW                      
+       WWWWW  WWWWWW                    
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"""
 
 @staticmethod
