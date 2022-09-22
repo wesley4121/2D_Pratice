@@ -1,4 +1,3 @@
-from glob import glob1
 from pygame import SRCALPHA
 import pygame 
 import sys
@@ -75,9 +74,9 @@ def Create_map(map_str):
         for x, c in enumerate(line):
             if c == "W":
                 wallgroup.add(wall(x*32, y*32, tile_dirt))
-                print(x*32,y*32)
+                # print(x*32,y*32)
 def Move_map(speed):
-    print(map_startposition)
+    # print(map_startposition)
     for w in wallrectLIst:
         w.x+=speed
     
@@ -93,7 +92,7 @@ class Player(pygame.sprite.Sprite):
         self.pos = (self.width, self.height)
         self.image = pygame.image.load("tile_player.png").convert_alpha()
         self.rect = self.image.get_rect(topleft=(width, height))
-        self.movespeed = 10
+        self.movespeed = 5
         self.gravityspeed = 1
         self.jumpforce = 100
         self.jumpspeed = 10
@@ -118,9 +117,9 @@ class Player(pygame.sprite.Sprite):
 
         if key[pygame.K_w]:
             self.rect.y-=self.movespeed
-        if key[pygame.K_j]: #debug 移動地圖
-            for w in wallrectLIst:
-                w.x-=1
+        # if key[pygame.K_j]: #debug 移動地圖
+        #     for w in wallrectLIst:
+        #         w.x-=1
         if key[pygame.K_a]:
             self.rect.x -= self.movespeed
         if key[pygame.K_d]:
@@ -202,7 +201,8 @@ class Player(pygame.sprite.Sprite):
         # 檢查平台碰撞
         if not topleftBool or not topmidBool or not toprightBool:#上
             # print('topcol')
-            self.rect.y +=self.movespeed
+            if not self.isground:
+                self.rect.y +=self.movespeed
         if not topleftBool or not midleftBool : #左
             # print('leftcol')
             self.rect.x +=self.movespeed
@@ -211,17 +211,15 @@ class Player(pygame.sprite.Sprite):
             self.rect.x -=self.movespeed
         if not bottomleftBool or not bottommidtBool or not bottomrightBool:#下
             # print('bottoncol')
-            if not self.isground:
-                self.rect.y -=1
             self.isground = True
         else:
             self.isground = False
+        self.display()
     ## 玩家顯示
     def display(self):
         screen.blit(self.image, self.rect)
     ## 持續更新函數
     def update(self):
-        self.display()
         self.gravity()
         self.move()
         self.drawCollidePosint()
@@ -229,15 +227,15 @@ class Player(pygame.sprite.Sprite):
 
     ## 顯示碰撞格 dubug
 
-        # self.cheakCollidePoint(topleft,topleftBool)
-        # self.cheakCollidePoint(midtop,topmidBool)
-        # self.cheakCollidePoint(topright,toprightBool)
-        # self.cheakCollidePoint(midleft,midleftBool)
-        # self.cheakCollidePoint(center,midcenterBool)
-        # self.cheakCollidePoint(midright,midrightBool)
-        # self.cheakCollidePoint(bottomleft,bottomleftBool)
-        # self.cheakCollidePoint(midbottom,bottommidtBool)
-        # self.cheakCollidePoint(bottomright,bottomrightBool)
+        self.cheakCollidePoint(topleft,topleftBool)
+        self.cheakCollidePoint(midtop,topmidBool)
+        self.cheakCollidePoint(topright,toprightBool)
+        self.cheakCollidePoint(midleft,midleftBool)
+        self.cheakCollidePoint(center,midcenterBool)
+        self.cheakCollidePoint(midright,midrightBool)
+        self.cheakCollidePoint(bottomleft,bottomleftBool)
+        self.cheakCollidePoint(midbottom,bottommidtBool)
+        self.cheakCollidePoint(bottomright,bottomrightBool)
 
 
 
@@ -250,7 +248,6 @@ wallrectLIst = [i.rect for i in wallgroup]
     
 while 1:
 
-    screen.blit(bg_surface,(0,0))
     screen.blit(map_surface,(map_positionX,map_positionY))
     map_surface.blit(background, backgroundrect)
     wallgroup.draw(map_surface)

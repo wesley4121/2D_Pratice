@@ -27,7 +27,7 @@ map1 = """
        WWWWW  WWWWWW                                    W                                       W                       
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"""
 
-def getMapStr(map) -> list:
-    if map ==1 :
+def getMapStr(index) -> list:
+    if index ==1 :
         return map1.splitlines()
     
