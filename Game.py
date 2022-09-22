@@ -20,9 +20,10 @@ def game_display():
         map_positionY
     
     screenscale = 1
+    stagescale = 1
     screensize = screenwidth, screenheight = 1280*screenscale, 704*screenscale
     screen = pygame.display.set_mode(screensize)
-    map_surface = pygame.Surface(screensize,pygame.SRCALPHA)
+    map_surface = pygame.Surface((1280*stagescale,704*stagescale),pygame.SRCALPHA)
     bg_surface = pygame.Surface(screensize,pygame.SRCALPHA)
     map_positionX = 0
     map_positionY = 0
