@@ -16,27 +16,37 @@ BLUE =  (0, 0, 255)
 ## 顯示主要surface
 def game_display():
     global screenwidth, screenheight, screen, screensize, screenscale,map_surface,bg_surface,map_positionX,\
-        map_positionY
+        map_positionY,TILE
     
     screenscale = 1
     stagescale = 1
-    screensize = screenwidth, screenheight = 1280*screenscale, 704*screenscale
+    STAGEHEIGHT = 704
+    STAGEWIDGHT=1280
+    TILE = 32
+    stageheightscale= 2
+    stageTileY = ((TILE*(len(GameMapSource.getMapStr(1))-1))//stageheightscale)
+    screensize = screenwidth, screenheight = STAGEWIDGHT*screenscale, STAGEHEIGHT*screenscale
     screen = pygame.display.set_mode(screensize)
-    map_surface = pygame.Surface((1280*stagescale,704*stagescale),pygame.SRCALPHA)
-    bg_surface = pygame.Surface(screensize,pygame.SRCALPHA)
+    map_surface = pygame.Surface((STAGEWIDGHT*stagescale,STAGEHEIGHT*stagescale*stageheightscale),pygame.SRCALPHA)
+    bg_surface = pygame.Surface((STAGEWIDGHT*stagescale,STAGEHEIGHT*stagescale*stageheightscale),pygame.SRCALPHA)
     map_positionX = 0
     map_positionY = 0
+    print((TILE*(len(GameMapSource.getMapStr(1))-1)) //STAGEHEIGHT)
 
 def draw_mapScroltriger():
-    global ScreenTriger_rgiht,ScreenTriger_left
-    ScreenTriger_left =  pygame.Rect(0,0,200,720)
-    # pygame.draw.rect(screen,RED,ScreenTriger_left)
-    ScreenTriger_rgiht =  pygame.Rect(1080,0,200,720)
-    # pygame.draw.rect(screen,RED,ScreenTriger_rgiht)
+    global ScrollTriger_rgiht,ScrollTriger_left,ScreenTriger_top,ScrollTriger_top
+    ScrollTriger_left =  pygame.Rect(0,0,250,720)
+    # pygame.draw.rect(screen,RED,ScrollTriger_left)
+    ScrollTriger_rgiht =  pygame.Rect(1030,0,250,720)
+    # pygame.draw.rect(screen,RED,ScrollTriger_rgiht)
+    ScrollTriger_top =  pygame.Rect(0,0,1280,225)
+    # pygame.draw.rect(screen,RED,ScrollTriger_top)
+    ScreenTriger_top =  pygame.Rect(0,0,1280,2)
+    # pygame.draw.rect(screen,RED,ScreenTriger_top)
 
 
 game_display()
-map_scrollspeed = 5
+map_scrollspeed = 3
 map_startposition =0
 background = pygame.image.load("BG.png").convert_alpha()
 backgroundrect = background.get_rect()
@@ -93,30 +103,31 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load("tile_player.png").convert_alpha()
         self.rect = self.image.get_rect(topleft=(width, height))
         self.movespeed = 5
-        self.gravityspeed = 1
-        self.jumpforce = 100
-        self.jumpspeed = 10
+        self.gravityspeed = 5
+        self.jumpforce = 200
+        self.jumpspeed = 5
         self.isjump = False
         self.isground = False
+        self.endposition =0
+        self.nowposition =0
 
     ## 重力
     def gravity(self):
+        if not self.isground and not self.isjump:  # how fast player falls
+            self.rect.y += self.gravityspeed
 
-        self.rect.y += self.gravityspeed  # how fast player falls
-        if pygame.sprite.spritecollide(player, wallgroup, 0, None): ## 碰撞
-            self.gravityspeed = 0
-
-        else:
-            self.gravityspeed = 1
     ## 移動
     def move(self):
         key = pygame.key.get_pressed()
-        global nowposition,map_positionX
-        nowposition = self.rect.y
-        # 　鍵盤
+        global map_positionX
 
+        self.jump()
+
+        # 　鍵盤
         if key[pygame.K_w]:
-            self.rect.y-=self.movespeed
+            print(self.isground)
+            if self.isground :
+                self.isjump = True
         # if key[pygame.K_j]: #debug 移動地圖
         #     for w in wallrectLIst:
         #         w.x-=1
@@ -124,18 +135,24 @@ class Player(pygame.sprite.Sprite):
             self.rect.x -= self.movespeed
         if key[pygame.K_d]:
             self.rect.x += self.movespeed
-        if key[pygame.K_SPACE]:  # debug
-            print(self.isground)
+        # if key[pygame.K_SPACE]:  
+
+
+                
         if key[pygame.K_q]:  # debug
             sys.exit()
     ## 跳躍
     def jump(self):
-
-        self.isjump = True
-        endposition = self.rect.y + self.jumpforce
-        if self.isground and self.isjump:
-            while self.rect.y < endposition:
-                self.rect.y += self.movespeed
+        if  self.isjump:
+            if self.rect.y > self.endposition and ( topleftBool and  topmidBool and  toprightBool) and not mapbounds_topBool:
+                self.rect.y -= self.jumpspeed
+                print('end',self.endposition,'now',self.rect.y)
+            else:
+                self.isjump = False
+        else: 
+            self.nowposition = self.rect.y
+            self.endposition = self.rect.y - self.jumpforce
+            print(self.endposition)
     ##  繪製碰撞點
     def cheakCollidePoint(self,rect,colbool):
         if  colbool:
@@ -146,8 +163,8 @@ class Player(pygame.sprite.Sprite):
     def drawCollidePosint(self):
         global topleft,midtop,topright,midleft,center,midright,bottomleft,midbottom,bottomright,\
         topleftBool,topmidBool,toprightBool,midleftBool,midcenterBool,midrightBool,bottomleftBool,\
-        bottommidtBool,bottomrightBool,mapScroll_rightBool,mapScroll_leftBool
-
+        bottommidtBool,bottomrightBool,mapScroll_rightBool,mapScroll_leftBool,ScreenTriger_top,\
+        mapbounds_topBool
         ## 碰撞點trigger
         topleft = pygame.Rect((self.rect.topleft[0],self.rect.topleft[1]),(3,3))
         midtop = pygame.Rect((self.rect.midtop[0]-20,self.rect.midtop[1]),(40,3))
@@ -173,9 +190,12 @@ class Player(pygame.sprite.Sprite):
         bottomleftBool = bool((pygame.Rect.collidelist(bottomleft,wallrectLIst) == -1))
         bottommidtBool = bool((pygame.Rect.collidelist(midbottom,wallrectLIst) == -1))
         bottomrightBool = bool((pygame.Rect.collidelist(bottomright,wallrectLIst) == -1))
-
-        mapScroll_rightBool = pygame.Rect.colliderect(self.rect,ScreenTriger_rgiht)
-        mapScroll_leftBool = pygame.Rect.colliderect(self.rect,ScreenTriger_left)
+        ## 視窗
+        mapScroll_rightBool = pygame.Rect.colliderect(self.rect,ScrollTriger_rgiht)
+        mapScroll_leftBool = pygame.Rect.colliderect(self.rect,ScrollTriger_left)
+        ## 跳躍頂碰撞
+        mapbounds_topBool = pygame.Rect.colliderect(self.rect,ScreenTriger_top)
+        
 
     ## 碰撞行為
     def collidbehevior(self):
@@ -185,8 +205,8 @@ class Player(pygame.sprite.Sprite):
             self.rect.x = screenwidth-64
         if self.rect.left <= 0:
             self.rect.x = 0
-        if self.rect.bottom >= screenheight:
-            self.rect.y = screenheight
+        # if self.rect.bottom >= screenheight:
+        #     self.rect.y = screenheight
         if self.rect.top <= 0:
             self.rect.y = 0
         # 檢查移動地圖
@@ -245,9 +265,10 @@ Create_map(GameMapSource.getMapStr(1))
 wallrectLIst = [i.rect for i in wallgroup]
 
 
-    
 while 1:
 
+    # bg_surface.blit(background, backgroundrect)
+    # screen.blit(bg_surface,(0,0))
     screen.blit(map_surface,(map_positionX,map_positionY))
     map_surface.blit(background, backgroundrect)
     wallgroup.draw(map_surface)

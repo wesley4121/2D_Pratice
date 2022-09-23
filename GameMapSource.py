@@ -10,21 +10,43 @@ map1 = """
                                                                                                                         
                                                                                                                         
                                                                                                                         
+                                                                               WWWWWWWWWWWWWWWWWWWWW                    
+                                                                                                                        
+                                                                                                                        
+                                                              WWWWWWWWWWWWW                                             
+                                                                                                                        
+                                                   WWWW                                                                 
+                                                                                                                        
+                                                                                                                        
+                                          WWWWW                                                                         
+                                 WWWW                                                                                   
+                          WWWWW                                                                                         
+                  WWWW                                                                                                  
+          WWWWW                                                                                                         
+                                                                                                                        
+                                                                                                                        
+WWW  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
                                                                                                                         
                                                                                                                         
                                                                                                                         
-       WWWWW WWWWWWWWWWWWWWWW                  WWWWW WWWWWWWWWWWWWWWW                  WWWWW WWWWWWWWWWWWWWWW           
                                                                                                                         
                                                                                                                         
                                                                                                                         
+                                                                               WWWWWWWWWWWWWWWWWWWWW                    
                                                                                                                         
                                                                                                                         
+                                                              WWWWWWWWWWWWW                                             
+                                                                                                                        
+                                                   WWWW                                                                 
                                                                                                                         
                                                                                                                         
-                W                                       W                                       W                       
-                W                                       W                                       W                       
-         WWW    WW                                      W                                       W                       
-       WWWWW  WWWWWW                                    W                                       W                       
+                                          WWWWW                                                                         
+                                 WWWW                                                                                   
+                          WWWWW                                                                                         
+                  WWWW                                                                                                  
+          WWWWW                                                                                                         
+                                                                                                                        
+                                                                                                                        
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"""
 
 def getMapStr(index) -> list:
